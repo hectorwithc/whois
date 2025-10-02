@@ -1,7 +1,11 @@
 "use client";
 
 import { GlobeDemo } from "@/components/globe-demo";
+import NavbarNotification from "@/components/navbar-notification";
 
 export default function HomePage() {
-  return <GlobeDemo />;
+  return <div>
+    <NavbarNotification />
+    <GlobeDemo />
+  </div>;
 }

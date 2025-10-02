@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { isPrivateIPv4, isPublicIPv4 } from "@/utils/ipAddress";
@@ -22,7 +24,11 @@ export default function SearchForm() {
           return;
         }
 
-        if (!domainRegex.test(query) && !isPublicIPv4(query) && !isPrivateIPv4(query)) {
+        if (
+          !domainRegex.test(query) &&
+          !isPublicIPv4(query) &&
+          !isPrivateIPv4(query)
+        ) {
           toast.error("Invalid IP address", {
             richColors: true,
             description: "Please enter a valid domain or IPv4 address.",
