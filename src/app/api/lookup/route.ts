@@ -1,9 +1,10 @@
 import { LookupInput } from "@/types/LookupAPI";
-import { domainRegex, ipRegex } from "@/utils/regex";
+import { domainRegex } from "@/utils/regex";
 import dns from "node:dns";
 import { cloudflare } from "@/server/cloudflare";
 import type { NextRequest } from "next/server";
 import { getIPLocation } from "@/server/geoip";
+import { isPublicIPv4 } from "@/utils/ipAddress";
 
 export async function POST(request: NextRequest) {
   let json: LookupInput;
@@ -21,9 +22,7 @@ export async function POST(request: NextRequest) {
   const { query } = json;
   let ip;
   let domain;
-  if (ipRegex.test(query)) {
-    ip = query;
-  } else if (domainRegex.test(query)) {
+  if (domainRegex.test(query)) {
     // Check ip that domain resolves to
     domain = query;
     const records = await dns.promises.lookup(query).catch(() => null);
@@ -40,12 +39,16 @@ export async function POST(request: NextRequest) {
     }
     ip = records.address;
   } else {
-    return new Response(JSON.stringify({ error: "Invalid query" }), {
-      status: 400,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (isPublicIPv4(query)) {
+      ip = query;
+    } else {
+      return new Response(JSON.stringify({ error: "Invalid query" }), {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
   }
 
   const entity = await cloudflare.radar.entities.get({ ip: ip });

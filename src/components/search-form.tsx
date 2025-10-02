@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { isPrivateIPv4, isPublicIPv4 } from "@/utils/ipAddress";
+import { domainRegex } from "@/utils/regex";
 import { Loader2Icon, SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function SearchForm() {
   const router = useRouter();
@@ -16,6 +19,15 @@ export default function SearchForm() {
         e.preventDefault();
 
         if (!query) {
+          return;
+        }
+
+        if (!domainRegex.test(query) && !isPublicIPv4(query) && !isPrivateIPv4(query)) {
+          toast.error("Invalid IP address", {
+            richColors: true,
+            description: "Please enter a valid domain or IPv4 address.",
+          });
+
           return;
         }
 
