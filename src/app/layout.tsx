@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WhoIs",
-  description: "Check information about a domain, IP address or phone number.",
+  title: "WhoIs - Check information about a domain or IP address.",
+  description: "Check information about a domain or IP address.",
 };
 
 export default function RootLayout({
