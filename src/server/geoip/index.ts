@@ -9,12 +9,12 @@ export async function getIPLocation(ip: string) {
         password: process.env.GEOIP_API_LICENSE_KEY!,
       },
     })
-    .then((response) => {
-      console.log(response.data);
-    })
     .catch((error) => {
-      console.error(error.response?.data || error.message);
+      console.error(error);
+      return null;
     });
+
+  console.log(data);
 
   return data;
 }
