@@ -2,23 +2,14 @@
 import React from "react";
 import { motion } from "motion/react";
 import Footer from "@/components/footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Loader2Icon, SearchIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import dynamic from "next/dynamic";
+import SearchForm from "./search-form";
 
 const World = dynamic(() => import("./ui/globe").then((m) => m.World), {
   ssr: false,
 });
 
 export function GlobeDemo() {
-  const router = useRouter();
-
-  const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(false);
-
   const globeConfig = {
     pointSize: 4,
     globeColor: "#062056",
@@ -428,33 +419,7 @@ export function GlobeDemo() {
               Check information about a domain or IP address.
             </p>
           </div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-
-              if (!query) {
-                return;
-              }
-
-              setLoading(true);
-              router.push(`/lookup/${query}`);
-            }}
-            className="flex gap-1 max-w-xl w-full"
-          >
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Domain or IP address"
-            />
-            <Button type="submit">
-              {loading ? (
-                <Loader2Icon className="animate-spin" />
-              ) : (
-                <SearchIcon />
-              )}
-              {loading ? "Searching..." : "Search"}
-            </Button>
-          </form>
+          <SearchForm />
         </motion.div>
         <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black to-white z-40" />
         <div className="absolute w-full -bottom-20 h-72 md:h-full z-10">
