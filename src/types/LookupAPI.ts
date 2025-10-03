@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CityResponse } from "maxmind";
 
 export type LookupInput = {
@@ -7,8 +8,8 @@ export type LookupInput = {
 export type LookupOutput = {
   ip: string;
   domain?: string;
-  entity: unknown;
+  entity: any;
   location: CityResponse | null;
-  asn: unknown;
-  country: unknown;
+  asn: any;
+  country: any;
 }
