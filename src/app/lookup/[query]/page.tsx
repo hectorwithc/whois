@@ -2,7 +2,6 @@ import MapComponent from "@/components/map-component";
 import { LookupOutput } from "@/types/LookupAPI";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -10,13 +9,19 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import axios from "axios";
-import { CircleXIcon, HatGlassesIcon, LandmarkIcon, MoveRightIcon, UsersRoundIcon } from "lucide-react";
+import {
+  CircleXIcon,
+  HatGlassesIcon,
+  LandmarkIcon,
+  MoveRightIcon,
+  UsersRoundIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { formatWithCommas, formatWithSuffix } from "@/utils/formatNumbers";
 import Footer from "@/components/footer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import CloudflareIcon from "@/components/icon/cloudflare-icon";
-import { isCloudflareIp, isPrivateIPv4, isPublicIPv4 } from "@/utils/ipAddress";
+import { isCloudflareIp, isPrivateIPv4 } from "@/utils/ipAddress";
 
 export default async function LookupPage({
   params,
@@ -25,33 +30,43 @@ export default async function LookupPage({
 }) {
   const { query } = await params;
 
-  const res = await axios.post(
-    "/api/lookup",
-    {
-      query,
-    },
-    {
-      baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-    }
-  ).catch((error) => {
-    return null;
-  });
+  const res = await axios
+    .post(
+      "/api/lookup",
+      {
+        query,
+      },
+      {
+        baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+      }
+    )
+    .catch((error) => {
+      return null;
+    });
 
   if (!res) {
     if (isPrivateIPv4(query)) {
-      return <div className="flex items-center justify-center flex-col h-screen">
-      <HatGlassesIcon size={64} className="text-muted-foreground" />
-      <h1 className="text-2xl font-semibold mt-2">Private IP address</h1>
-      <p className="text-muted-foreground">This IP address is private and cannot be looked up.</p>
-      <Footer floating={true} />
-    </div>;
+      return (
+        <div className="flex items-center justify-center flex-col h-screen">
+          <HatGlassesIcon size={64} className="text-muted-foreground" />
+          <h1 className="text-2xl font-semibold mt-2">Private IP address</h1>
+          <p className="text-muted-foreground">
+            This IP address is private and cannot be looked up.
+          </p>
+          <Footer floating={true} />
+        </div>
+      );
     } else {
-      return <div className="flex items-center justify-center flex-col h-screen">
-      <CircleXIcon size={64} className="text-red-500" />
-      <h1 className="text-2xl font-semibold mt-2">Invalid IP address</h1>
-      <p className="text-muted-foreground">Please enter a valid public IP address or domain.</p>
-      <Footer floating={true} />
-    </div>;
+      return (
+        <div className="flex items-center justify-center flex-col h-screen">
+          <CircleXIcon size={64} className="text-red-500" />
+          <h1 className="text-2xl font-semibold mt-2">Invalid IP address</h1>
+          <p className="text-muted-foreground">
+            Please enter a valid public IP address or domain.
+          </p>
+          <Footer floating={true} />
+        </div>
+      );
     }
   }
 
