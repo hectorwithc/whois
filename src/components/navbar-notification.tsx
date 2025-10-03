@@ -12,6 +12,7 @@ export default function NavbarNotification() {
     city: string;
     country: string;
   }>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!data) {
@@ -19,7 +20,7 @@ export default function NavbarNotification() {
         .get(
           `https://ipinfo.io/json?token=${process.env.NEXT_PUBLIC_IPINFO_API_TOKEN}`
         )
-        .then((res) => setData(res.data))
+        .then((res) => setData(res.data));
     }
   });
 
@@ -29,10 +30,11 @@ export default function NavbarNotification() {
       <button
         className="text-blue-500 underline cursor-pointer"
         onClick={() => {
+          setLoading(true);
           router.push(`/lookup/${data?.ip}`);
         }}
       >
-        Check my IP
+        {loading ? "Checking ip address..." : "Check my IP"}
       </button>
     </div>
   );
