@@ -1,5 +1,5 @@
-import { EntityGetResponse } from "cloudflare/resources/radar.mjs";
-import { ASNIPResponse } from "cloudflare/resources/radar/entities.mjs";
+import { EntityGetResponse } from "cloudflare/resources/radar.js";
+import { ASNIPResponse } from "cloudflare/resources/radar/entities.js";
 import { LocationGetResponse } from "cloudflare/src/resources/radar/entities.js";
 import { CityResponse } from "maxmind";
 
